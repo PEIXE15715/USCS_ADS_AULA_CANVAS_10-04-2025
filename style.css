@@ -1,0 +1,15 @@
+h1{
+    color: rgb(235, 4, 4);
+    font-size: 500%;
+}
+h2 {
+    color: rgb(44, 12, 226);
+  font-size: 350%;
+}
+canvas
+{
+    border: 7px solid black;
+   }
+body{
+    text-align:center ;
+}
