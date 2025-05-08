@@ -36,6 +36,7 @@ bullet.src = "bala.png";
 
 let bW = 30;
 let bH = 30;
+let bRadius = bW/2;
 let bSpeed = 9;
 let bullets = [[400, 400], [400, -100], [400, -100]];
 
@@ -44,8 +45,17 @@ enemy.src = "rei.png";
 
 let eW = 60;
 let eH = 80;
+let eRadius = eW/2;
 let eSpeed = 2;
 let enemies = [[200, 100, eSpeed]];
+let eSpawnCD = 3000;
+let eSpawnTimer = 0;
+
+
+
+
+
+
 
 function desenha ()
 {
@@ -161,6 +171,59 @@ function drawEnemies()
         }
     }
 }
+function detectCollison()
+{
+   for (let i = 0; i < bullets.length; i ++)
+   {
+    for(let j = 0; j < enemies.length; j++)
+    {
+       if (testCollison(bullets[i], enemies[j]))
+       {
+         bullets[i][1] = -500;
+         enemies.splice(j, 1);
+       }
+    }
+   }
+
+}
+
+function testCollison(b, e)
+{
+
+    let dist = Math.sqrt((b[0]-e[0])**2 + (b[1])**2);
+    if (bRadius+eRadius > dist)
+    {
+        return true;
+    }
+    else
+     {
+       return false
+     }
+}
+
+function spawnEnemy()
+{
+    eSpawnTimer +- 1000/60;
+    if (eSpawnTimer >= eSpawnCD)
+    {
+        eSpawnTimer = 0;
+        let x = Math.random() * canvas.width;
+        let y = Math.random() * 100 + 50;
+        let s = (Math.random() * eSpeed * 2) - eSpeed;
+        let e = [x, y, s];
+        enemies.push(e);
+    }
+}
+    
+
+
+
+
+
+
+
+
+
 
 function jogar()
 {
@@ -178,6 +241,9 @@ function jogar()
 
     drawBullets();
     drawEnemies();
+    detectCollison();
+    spawnEnemy();
+    
       
 }
 
