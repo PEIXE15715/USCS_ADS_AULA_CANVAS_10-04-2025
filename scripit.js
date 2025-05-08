@@ -16,7 +16,7 @@ let speedY2 = speed2*2*Math.sin(ang2);
 
 
 let player = new Image();
-player.src = "carro.png";
+player.src = "carrinho.png";
 
 let background = new Image();
 background.src = "pista.png";
@@ -26,12 +26,26 @@ let bgW =  canvas.width;
 let bgH = canvas.height;
 let playerSpeed = 1;
 let pX = 470;
-let pY = 630;
+let pY = 620;
 let pW = 100;
 let pH = 80;
 
 
+let bullet = new Image();
+bullet.src = "bala.png";
 
+let bW = 30;
+let bH = 30;
+let bSpeed = 9;
+let bullets = [[400, 400], [400, -100], [400, -100]];
+
+let enemy = new Image();
+enemy.src = "rei.png";
+
+let eW = 60;
+let eH = 80;
+let eSpeed = 2;
+let enemies = [[200, 100, eSpeed]];
 
 function desenha ()
 {
@@ -94,15 +108,63 @@ canvas.addEventListener(
     "click",
     function(event)
     {
-        console.log("atirou");
+        //console.log("atirou");
+        for(let i = 0; i < bullets.length; i++){
+            if (bullets[i][1] < -100)
+            {
+                bullets[i][0] = pX + pW/3;
+                bullets[i][1] = pY;
+                break;
+
+            }
+            
+         
+        }
     }
 );
 
 
+function drawBullets()
+{
+    for (let i = 0; i < bullets.length; i++)
+    { 
+        bullets[i][1]-= bSpeed;
+        ctx.beginPath();
+        ctx.drawImage(
+            bullet,
+            bullets[i][0],
+            bullets[i][1],
+            bW,
+            bH
+        
+        );
+
+    }
+}
+
+function drawEnemies()
+{
+    for (let i = 0; i < enemies.length; i++)
+    {
+        enemies[i][0] -= enemies[i][2];
+        ctx.beginPath();
+        ctx.drawImage(
+            enemy,
+            enemies[i][0],
+            enemies[i][1],
+            eW,
+            eH
+        );
+        if (enemies[i][0] < -100 || enemies[i][0] > 900)
+        {
+
+        }
+    }
+}
 
 function jogar()
 {
-   ctx.clearRect(0, 0, canvas.wifth,  canvas.height);
+   ctx.clearRect(0, 0, canvas.width,  canvas.height);
    bgY += playerSpeed;
    if(bgY >= bgH)
    {
@@ -114,7 +176,8 @@ function jogar()
 
    ctx.drawImage(player, pX, pY, pW, pH);
 
-
+    drawBullets();
+    drawEnemies();
       
 }
 
